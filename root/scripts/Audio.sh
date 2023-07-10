@@ -41,7 +41,7 @@ log () {
 
 # auto-clean up log file to reduce space usage
 if [ -f "/config/logs/Audio.txt" ]; then
-	find /config/logs -type f -name "Audio.txt" -size +5000k -delete
+	find /config/logs -type f -name "Audio.txt" -size +1000k -delete
 	sleep 0.01
 fi
 touch "/config/logs/Audio.txt"
@@ -74,14 +74,8 @@ log "Donate: https://github.com/sponsors/RandomNinjaAtk"
 log "Project: https://github.com/RandomNinjaAtk/docker-lidarr-extended"
 log "Support: https://github.com/RandomNinjaAtk/docker-lidarr-extended/discussions"
 log "-----------------------------------------------------------------------------"
-sleep 5
 log ""
-log "Lift off in..."; sleep 0.5
-log "5"; sleep 1
-log "4"; sleep 1
-log "3"; sleep 1
-log "2"; sleep 1
-log "1"; sleep 1
+log "Lift off!"; sleep 0.5
 
 
 
@@ -788,7 +782,7 @@ ProcessWithBeets () {
 	fi	
 
 	if [ ! -f "/config/extended/logs/downloaded/musicbrainz_matched/$matchedTagsAlbumReleaseGroupId" ]; then
-		log "$page :: $wantedAlbumListSource :: $processNumber of $wantedListAlbumTotal :: $lidarrArtistName :: $lidarrAlbumTitle :: $lidarrAlbumType :: Marking MusicBrainz Release Group ($matchedTagsAlbumReleaseGroupId) as succesfully downloaded..."
+		log "$page :: $wantedAlbumListSource :: $processNumber of $wantedListAlbumTotal :: $lidarrArtistName :: $lidarrAlbumTitle :: $lidarrAlbumType :: Marking MusicBrainz Release Group ($matchedTagsAlbumReleaseGroupId) as successfully downloaded..."
 		touch "/config/extended/logs/downloaded/musicbrainz_matched/$matchedTagsAlbumReleaseGroupId"
 
 	fi
@@ -1759,23 +1753,9 @@ CheckLidarrBeforeImport () {
 			fi
 		fi
 	fi
-}
-
 LidarrTaskStatusCheck () {
-	alerted=no
-	until false
-	do
-		taskCount=$(curl -s "$lidarrUrl/api/v1/command?apikey=${lidarrApiKey}" | jq -r '.[] | select(.status=="started") | .name' | wc -l)
-		if [ "$taskCount" -ge "1" ]; then
-			if [ "$alerted" == "no" ]; then
-				alerted=yes
-				log "STATUS :: LIDARR BUSY :: Pausing/waiting for all active Lidarr tasks to end..."
-			fi
-			sleep 2
-		else
-			break
-		fi
-	done
+	log "STATUS :: LIDARR BUSY :: Life in the Fast Lane..."
+	sleep $sleepTimer
 }
 
 LidarrMissingAlbumSearch () {
